@@ -22,7 +22,9 @@ function ROUNDEM_DATA:RegisterSound(sound, team)
 
   resource.AddFile("sound/roundem/" .. team .. "/" .. sound)
 
-  CreateConVar("ttt_roundem_" .. team .. "_enable", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+  if not GetConVar("ttt_roundem_" .. team .. "_enable") then
+    CreateConVar("ttt_roundem_" .. team .. "_enable", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+  end
 
   if not self.SOUNDS[team] then
     self.SOUNDS[team] = {}
