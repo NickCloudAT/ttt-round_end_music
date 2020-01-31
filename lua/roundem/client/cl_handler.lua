@@ -39,13 +39,13 @@ local tttrspnl = xlib.makelistlayout{w = 415, h = 318, parent = xgui.null}
 
 -- Sound Settings
 local tttrsclp1 = vgui.Create('DCollapsibleCategory', tttrspnl)
-tttrsclp1:SetSize(390, 20 * #ROUNDEM_DATA.SOUNDS)
+tttrsclp1:SetSize(390, 20 * table.Count(ROUNDEM_DATA.SOUNDS))
 tttrsclp1:SetExpanded(1)
 tttrsclp1:SetLabel('Enable Teams')
 
 local tttrslst1 = vgui.Create('DPanelList', tttrsclp1)
 tttrslst1:SetPos(5, 25)
-tttrslst1:SetSize(390, 20 * #ROUNDEM_DATA.SOUNDS)
+tttrslst1:SetSize(390, 20 * table.Count(ROUNDEM_DATA.SOUNDS))
 tttrslst1:SetSpacing(5)
 
 for team in pairs(ROUNDEM_DATA.SOUNDS) do

@@ -1,5 +1,3 @@
-if SERVER then
-
 function ROUNDEM_DATA:LoadSounds()
   local files, folders = file.Find("sound/roundem/*", "GAME")
 
@@ -21,9 +19,10 @@ function ROUNDEM_DATA:RegisterSound(sound, team)
   print("[RoundEndMusic] Registering sound " .. sound .. " for team " .. team)
 
   resource.AddFile("sound/roundem/" .. team .. "/" .. sound)
-
-  if not GetConVar("ttt_roundem_" .. team .. "_enable") then
-    CreateConVar("ttt_roundem_" .. team .. "_enable", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+  if SERVER then
+    if not GetConVar("ttt_roundem_" .. team .. "_enable") then
+      CreateConVar("ttt_roundem_" .. team .. "_enable", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+    end
   end
 
   if not self.SOUNDS[team] then
@@ -33,6 +32,7 @@ function ROUNDEM_DATA:RegisterSound(sound, team)
   table.insert(self.SOUNDS[team], sound)
 end
 
+if SERVER then
 
 function ROUNDEM_DATA:GetSounds(team)
   return self.SOUNDS[team]
@@ -50,11 +50,6 @@ function ROUNDEM_DATA:IsTeamEnabled(team)
   return GetConVar("ttt_roundem_" .. team .. "_enable"):GetBool()
 end
 
-
-hook.Add("OnGamemodeLoaded", "TTT_REM_LOAD_SOUNDS", function()
-  ROUNDEM_DATA:LoadSounds()
-end)
-
 hook.Add("TTTUlxInitCustomCVar", "ttt_roundem_init_convars", function(name)
   for team in pairs(ROUNDEM_DATA.SOUNDS) do
     local convar_name = "ttt_roundem_" .. team .. "_enable"
@@ -64,3 +59,8 @@ hook.Add("TTTUlxInitCustomCVar", "ttt_roundem_init_convars", function(name)
 end)
 
 end
+
+
+hook.Add("OnGamemodeLoaded", "TTT_REM_LOAD_SOUNDS", function()
+  ROUNDEM_DATA:LoadSounds()
+end)
