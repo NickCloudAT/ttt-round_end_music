@@ -22,6 +22,8 @@ function ROUNDEM_DATA:RegisterSound(sound, team)
 
   resource.AddFile("sound/roundem/" .. team .. "/" .. sound)
 
+  CreateConVar("ttt_roundem_" .. team .. "_enable", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+
   if not self.SOUNDS[team] then
     self.SOUNDS[team] = {}
   end
@@ -42,8 +44,21 @@ function ROUNDEM_DATA:GetRandomSound(team)
 end
 
 
+function ROUNDEM_DATA:IsTeamEnabled(team)
+  return GetConVar("ttt_roundem_" .. team .. "_enable"):GetBool()
+end
+
+
 hook.Add("OnGamemodeLoaded", "TTT_REM_LOAD_SOUNDS", function()
   ROUNDEM_DATA:LoadSounds()
+end)
+
+hook.Add("TTTUlxInitCustomCVar", "ttt_roundem_init_convars", function(name)
+  for team in pairs(ROUNDEM_DATA.SOUNDS) do
+    local convar_name = "ttt_roundem_" .. team .. "_enable"
+    local rep_name = "rep_ttt_roundem_" .. team .. "_enable"
+    ULib.replicatedWritableCvar(convar_name, rep_name, GetConVar(convar_name):GetBool(), true, false, name)
+  end
 end)
 
 end

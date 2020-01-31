@@ -33,3 +33,30 @@ hook.Add("TTTSettingsTabs", "TTTRoundEndMusicSettings", function(dtabs)
 	Settings:CheckBox("Play Round End music", "ttt_roundendmusic_playmusic")
 
 end)
+
+hook.Add('TTTUlxModifyAddonSettings', 'ttt2_roundem_add_to_ulx', function(name)
+local tttrspnl = xlib.makelistlayout{w = 415, h = 318, parent = xgui.null}
+
+-- Sound Settings
+local tttrsclp1 = vgui.Create('DCollapsibleCategory', tttrspnl)
+tttrsclp1:SetSize(390, 20 * #DANCEGUN.songs)
+tttrsclp1:SetExpanded(1)
+tttrsclp1:SetLabel('Enable Teams')
+
+local tttrslst1 = vgui.Create('DPanelList', tttrsclp1)
+tttrslst1:SetPos(5, 25)
+tttrslst1:SetSize(390, 20 * #ROUNDEM_DATA.SOUNDS)
+tttrslst1:SetSpacing(5)
+
+for team in pairs(ROUNDEM_DATA.SOUNDS) do
+	local convar_name = 'ttt_roundem_' .. team .. '_enable'
+	local repvar_name = 'rep_ttt_roundem_' .. team .. '_enable'
+
+	local sound = xlib.makecheckbox{label = convar_name .. ' (def. 1)', repconvar = repvar_name, parent = tttrslst1}
+	tttrslst1:AddItem(sound)
+end
+
+-- add to ULX
+xgui.hookEvent('onProcessModules', nil, tttrspnl.processModules)
+xgui.addSubModule('Round End Music', tttrspnl, nil, name)
+end)

@@ -1,4 +1,6 @@
 function ROUNDEM_DATA:StartSound(team)
+  if not ROUNDEM_DATA:IsTeamEnabled(team) then return end
+
   local sound = self:GetRandomSound(team)
 
   net.Start("TTTRoundEndMusic_Start")
