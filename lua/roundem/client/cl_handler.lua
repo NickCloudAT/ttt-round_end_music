@@ -39,7 +39,7 @@ local tttrspnl = xlib.makelistlayout{w = 415, h = 318, parent = xgui.null}
 
 -- Sound Settings
 local tttrsclp1 = vgui.Create('DCollapsibleCategory', tttrspnl)
-tttrsclp1:SetSize(390, 20 * #DANCEGUN.songs)
+tttrsclp1:SetSize(390, 20 * #ROUNDEM_DATA.SOUNDS)
 tttrsclp1:SetExpanded(1)
 tttrsclp1:SetLabel('Enable Teams')
 
